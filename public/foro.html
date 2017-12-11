@@ -1,0 +1,184 @@
+<!doctype html>
+<html>
+<head>
+	<meta name="Foro Illuminatis"  content="text/html;" http-equiv="content-type" charset="utf-8">
+	<title>Foro Illuminati</title>
+	<!-- CSS BOOTSTRAP -->
+	<link rel="stylesheet" href="lib/css/bootstrap.min.css">
+	<!-- CSS FONT AWESOME -->
+	<link rel="stylesheet" href="lib/font-awesome-4.7.0/css/font-awesome.css">
+	<!-- Fuente Spectral+SC Google -->
+	<link href='https://fonts.googleapis.com/css?family=Spectral+SC' rel='stylesheet'>
+	<!-- Custom CSS -->
+	<link rel="stylesheet" href="lib/css/miestilo.css">
+	<!-- ANGULAR JS -->
+	<script src="lib/js/angular-1.6.4.min.js"></script>
+</head>
+<body ng-app="illuminati" ng-controller="Ctrl_foro" ng-init="readEntradas()">
+
+<!--HEADER-->
+<div ng-include="'views_common/header.html'"></div>
+
+<!-- BODY -->
+<div class="container-fluid margin-top-1">
+	<div class="row justify-content-center">
+		<div class="col-lg-10">
+
+			<h1 class="display-4 text-center">Foro Ejemplo</h1>
+
+    		<div class="border border-secondary" style="background-color:#e0e0e0;">
+		    	<p class="h4 text-center" style="padding-top:1rem;"><i class="fa fa-search text-info"></i> Filtrar <input type="text" ng-model="miFiltro"></p>
+    		</div>
+
+			<table class="table table-hover table-bordered table-sm">
+			  <thead class="thead-dark">
+			    <tr style="font-size:1rem;">
+			    	<th> Info</th>
+				    <th> Mensaje</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+				  <tr ng-repeat="x in entradas | filter:miFiltro">
+				  	<td>
+				  		<p> <img ng-src="{{x.avatar}}" id="avatarForo" class="rounded" alt="avatar"> </p>
+				  		<p class="text-detail-forum"><strong>Usuario:</strong> {{x.usuario}}</p> 
+				  		<p class="text-detail-forum"><strong>Asunto:</strong> {{x.asunto}} </p>
+				  		<p class="text-detail-forum"><strong>Fecha Entera:</strong> {{x.fecha}} </p>
+				  		<p class="text-detail-forum"><strong>Fecha:</strong> {{x.fecha.substring(0, 10)}} </p>
+				  		<p class="text-detail-forum"><strong>Hora:</strong> {{x.fecha.substring(11, 19)}}</p>
+				  	</td>
+				    <td style="width:80%;">
+				    	{{x.msg}}
+						<div class="text-right" id="footerFormu">
+							<button type="button" class="btn btn-sm btn-outline-success" data-toggle="modal" data-target="#modalEditar" ng-click="loadMSG(x._id, x.msg)" ng-disabled="!isOwner(x.usuario)"><i class="fa fa-edit"></i></button> 
+			    			<button type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#modalBorrar" ng-click="loadMSG(x._id, x.msg)" ng-disabled="!isOwner(x.usuario)"><i class="fa fa-trash"></i></button>
+						</div>
+				    </td>
+				  </tr>
+			  </tbody>
+			</table>
+
+		</div>
+	</div>
+</div>
+
+<div class="container-fluid">
+	<div class="row justify-content-center">
+
+		<div class="col-lg-10" id="contenedorForoInput">
+			<form name="formularioForoEntrada">
+
+			  <div class="form-group">
+			    <label for="asuntoForo">Asunto:</label>
+			    <input type="text" ng-model="asuntoForo" class="form-control" id="asuntoForo" name="asuntoForo" required>
+					  <span class="text-danger" ng-show="formularioForoEntrada.asuntoForo.$error.required">Asunto es obligatorio.</span>
+			  </div>
+			  <div class="form-group">
+			    <label for="mensajeForo">Mensaje:</label>
+				<textarea type="text" ng-model="mensajeForo" class="form-control" id="mensajeForo" name="mensajeForo" required></textarea>
+					  <span class="text-danger" ng-show="formularioForoEntrada.mensajeForo.$error.required">Mensaje es obligatorio.</span>
+			  </div>
+
+			  <div class="form-group text-center" ng-if="compruebaSiLogIn()">
+			    <button type="button" class="btn btn-md btn-outline-success" ng-click="createEntrada()" ng-disabled="(formularioForoEntrada.asuntoForo.$error.required) || (formularioForoEntrada.mensajeForo.$error.required)">
+			  	  <i class="fa fa-send"></i> Postear</button>
+			  </div>
+			  <div class="form-group text-center" ng-if="!compruebaSiLogIn()">
+				<h1 class="display-4 text-center">Necesitas Loguearte para postear !</h1>
+			  </div>
+
+			</form>
+		</div>
+
+	</div>
+</div>
+
+<!-- ||| MODAL ||| -->
+		<!-- \\\\\\MODAL EDITAR\\\\\\ -->
+					<div class="modal fade" id="modalEditar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-edit text-success"></i> Editar Mensaje</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+					        <form name="formularioEditarMensaje" novalidate>
+					          <div class="form-group">
+					            <label for="message-text" class="col-form-label">Mensaje:</label>
+					            <textarea type="text" class="form-control" id="msgInput" ng-model="msgInput" name="msgInput" required></textarea>
+									  <span class="text-danger" ng-show="formularioEditarMensaje.msgInput.$error.required">Msg es obligatorio.</span>
+					          </div>
+					        </form>
+					      </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="updateEntrada()"
+					        	ng-disabled="(formularioEditarMensaje.msgInput.$error.required)"><i class="fa fa-edit"></i> Modificar</button>
+					        <button type="button" class="btn btn-secondary"  data-dismiss="modal"><i class="fa fa-rotate-left"></i> Volver</button>
+					      </div>
+					    </div>
+					  </div>
+					</div>
+		<!-- \\\\\\MODAL BORRAR\\\\\\ -->
+					<div class="modal fade" id="modalBorrar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-trash text-danger"></i> Borrar Mensaje</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+					      	<h2>¿Esta a punto de <strong><mark>BORRAR</mark></strong> el siguiente mensaje, esta usted seguro?</h2>
+					        <form>
+					          <div class="form-group">
+					            <label for="message-text" class="col-form-label">Mensaje:</label>
+					            <textarea type="text" class="form-control" id="msgInput" ng-model="msgInput" disabled></textarea>
+					          </div>
+					        </form>
+					      </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="deleteEntrada()"><i class="fa fa-trash"></i> Borrar</button>
+					        <button type="button" class="btn btn-secondary"  data-dismiss="modal"><i class="fa fa-rotate-left"></i> Volver</button>
+					      </div>
+					    </div>
+					  </div>
+					</div>
+		<!-- \\\\\\MODAL CUSTOM MSG\\\\\\ -->
+					<div class="modal fade" id="modalMSG" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="exampleModalLabel"><i id="modalIcono"></i> {{titleMsgModal}} </h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+					      	<h5> {{bodyMsgModal}} </h5>
+					      </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-rotate-cross"></i> Cerrar</button>
+					      </div>
+					    </div>
+					  </div>
+					</div>
+<!-- ||| FIN MODAL ||| -->
+
+<!--FOOTER-->
+<div ng-include="'views_common/footer.html'"></div>
+
+<!-- JS JQUERY y BOOTSTRAP -->
+<script src="lib/js/jquery-3.2.1.slim.min.js"></script>
+<script src="lib/js/popper.min.js"></script>
+<script src="lib/js/bootstrap.min.js"></script>
+
+<!-- Controlador ANGULAR -->
+<script src="lib/js/controller/foro_controller.js"></script>
+
+<script src="lib/js/mijs.js"></script>
+</body>
+</html>

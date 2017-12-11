@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+<head>
+	<meta name="Panel Control Illuminati"  content="text/html;" http-equiv="content-type" charset="utf-8">
+	<title>Panel de Control Illuminati</title>
+	<!-- CSS BOOTSTRAP -->
+	<link rel="stylesheet" href="lib/css/bootstrap.min.css">
+	<!-- CSS FONT AWESOME -->
+	<link rel="stylesheet" href="lib/font-awesome-4.7.0/css/font-awesome.css">
+	<!-- Fuente Spectral+SC Google -->
+	<link href='https://fonts.googleapis.com/css?family=Spectral+SC' rel='stylesheet'>
+	<!-- Custom CSS -->
+	<link rel="stylesheet" href="lib/css/miestilo.css">
+	<!-- ANGULAR JS -->
+	<script src="lib/js/angular-1.6.4.min.js"></script>
+</head>
+<body ng-app="illuminati" ng-controller="Ctrl_panelControl" ng-init="start()">
+
+<!--HEADER-->
+<div ng-include="'views_common/header.html'"></div>
+
+<!-- BODY -->
+<div class="container-fluid margin-top-1">
+	<div class="row justify-content-center">
+
+		<div class="col-lg-10">
+			<h1 class="display-4 text-center">Panel de Control</h1>
+
+    		<div class="border border-secondary" style="background-color:#e0e0e0;" ng-if="compruebaSiLogIn()">
+		    	<div class="container-fluid">
+	    			<label>Tu ID es: {{usuario_id}} </label><br>
+			    	<label>Tu Nombre es: {{usuario_nombre}} </label><br>
+			    	<label>Tu Email es: {{usuario_email}} </label><br>
+			    	<label>Tu Tipo es: {{usuario_tipo}} </label><br>
+		    	</div>
+<hr>
+		    	<div class="container-fluid">
+			    	<label>Selecciona un avatar para tu perfil: </label><br>
+
+
+			    	<form><table class="text-center">
+			    		<tr>
+			    			<td><img style="width:90%;" src="lib/img/default.png"><br><input type="radio" ng-model="avatar.url" value="default"></td>
+			    			<td><img style="width:90%;" src="lib/img/1.png"><br><input type="radio" ng-model="avatar.url" value="1"></td>
+			    			<td><img style="width:90%;" src="lib/img/2.png"><br><input type="radio" ng-model="avatar.url" value="2"></td>
+			    			<td><img style="width:90%;" src="lib/img/3.png"><br><input type="radio" ng-model="avatar.url" value="3"></td>
+			    			<td><img style="width:90%;" src="lib/img/4.png"><br><input type="radio" ng-model="avatar.url" value="4"></td>
+			    			<td><img style="width:90%;" src="lib/img/5.png"><br><input type="radio" ng-model="avatar.url" value="5"></td>
+			    			<td><img style="width:90%;" src="lib/img/6.png"><br><input type="radio" ng-model="avatar.url" value="6"></td>
+			    			<td><img style="width:90%;" src="lib/img/7.png"><br><input type="radio" ng-model="avatar.url" value="7"></td>
+			    		</tr>
+			    		<tr>
+			    			<td colspan=8><button type="button" class="btn btn-outline-success" ng-click="updateUserAvatar()"><i class="fa fa-save"></i> Guardar Avatar</button></td>
+			    		</tr>
+			    	</table></form>
+
+		    	</div>
+
+		    	<p style="margin-top:3.9rem;" class="text-center"><button type="button" class="btn btn-outline-danger" ng-click="logout()"><i class="fa fa-sign-out"></i> Desconectarse</button></p>
+    		</div>
+
+    		<div class="border border-secondary" style="background-color:#e0e0e0;" ng-if="!compruebaSiLogIn()">
+    			<h1 class="display-4 text-center">No estas Autentificado! </h1>
+				<p class="text-center"> <a href="index.html" class="btn btn-info">Autentificación</a></p>
+    		</div>
+		</div>
+
+	</div>
+</div>
+
+<!-- ||| MODAL ||| -->
+		<!-- \\\\\\MODAL CUSTOM MSG\\\\\\ -->
+					<div class="modal fade" id="modalMSG" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-info-circle text-info"></i> {{titleMsgModal}} </h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+					      	<h5> {{bodyMsgModal}} </h5>
+					      </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-rotate-cross"></i> Cerrar</button>
+					      </div>
+					    </div>
+					  </div>
+					</div>
+<!-- ||| FIN MODAL ||| -->
+
+<!--FOOTER-->
+<div ng-include="'views_common/footer.html'"></div>
+
+<!-- JS JQUERY y BOOTSTRAP -->
+<script src="lib/js/jquery-3.2.1.slim.min.js"></script>
+<script src="lib/js/popper.min.js"></script>
+<script src="lib/js/bootstrap.min.js"></script>
+
+<!-- Controlador ANGULAR -->
+<script src="lib/js/controller/panelControl_controller.js"></script>
+
+<script src="lib/js/mijs.js"></script>
+</body>
+</html>

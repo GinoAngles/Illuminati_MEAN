@@ -1,0 +1,175 @@
+<!doctype html>
+<html>
+<head>
+	<meta name="Usuarios Illuminati"  content="text/html;" http-equiv="content-type" charset="utf-8">
+	<title>Usuarios Illuminati</title>
+	<!-- CSS BOOTSTRAP -->
+	<link rel="stylesheet" href="lib/css/bootstrap.min.css">
+	<!-- CSS FONT AWESOME -->
+	<link rel="stylesheet" href="lib/font-awesome-4.7.0/css/font-awesome.css">
+	<!-- Fuente Spectral+SC Google -->
+	<link href='https://fonts.googleapis.com/css?family=Spectral+SC' rel='stylesheet'>
+	<!-- Custom CSS -->
+	<link rel="stylesheet" href="lib/css/miestilo.css">
+	<!-- ANGULAR JS -->
+	<script src="lib/js/angular-1.6.4.min.js"></script>
+</head>
+<body ng-app="illuminati" ng-controller="Ctrl_user" ng-init="readUsers()">
+
+<!--HEADER-->
+<div ng-include="'views_common/header.html'"></div>
+
+<!-- BODY -->
+<div class="container-fluid margin-top-1">
+	<div class="row justify-content-center">
+
+		<div class="col-lg-10" ng-if="compruebaAdmin()">
+			<h1 class="display-4 text-center">Usuarios</h1>
+
+    		<div class="border border-secondary" style="background-color:#e0e0e0;">
+		    	<p class="h4 text-center" style="padding-top:1rem;"><i class="fa fa-search text-info"></i> Filtrar <input type="text" ng-model="miFiltro"></p>
+    		</div>
+
+          	<table class="table table-striped">
+			  <thead class="thead-dark">
+			    <tr style="cursor:pointer;">
+			    	<th ng-click="orderByMe('_id')"><i class="fa fa-sort text-info"></i> ID Interno Mongoose</th>
+			    	<th ng-click="orderByMe('nombre')"><i class="fa fa-sort text-info"></i> Nombre</th>
+				    <th ng-click="orderByMe('email')"><i class="fa fa-sort text-info"></i> Email</th>
+				    <th><i class="fa fa-sort text-info"></i> Hash By Crypto Of Pwd</th>
+				    <th> Editar</th>
+				    <th> Borrar</th>
+			    </tr>
+			  </thead>
+			  <tbody> 
+				  <tr ng-repeat="x in usuarios | orderBy:myOrderBy | filter:miFiltro">
+				  	<td>{{x._id}}</td>
+				  	<td>{{x.nombre}}</td>
+				    <td>{{x.email}}</td>
+				    <td>{{x.hash.substring(0,20)}}. . .</td>
+			      	<td> <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#modalEditar" ng-click="loadUser(x._id, x.nombre, x.email, x.hash)"><i class="fa fa-espx fa-edit text-success"></i></button> </td>
+			      	<td> <button type="button" class="btn btn-outline-dark" data-toggle="modal" data-target="#modalBorrar" ng-click="loadUser(x._id, x.nombre, x.email, x.hash)"><i class="fa fa-espx fa-trash text-danger"></i></button> </td>
+				  </tr>
+			  </tbody>
+			</table>
+		</div>
+
+		<div class="col-lg-10" ng-if="!compruebaAdmin()">
+			<h1 class="display-4 text-center">No eres Admin Bro !</h1>
+		</div>
+
+	</div>
+</div>
+
+<!-- ||| MODAL ||| -->
+		<!-- \\\\\\MODAL EDITAR\\\\\\ -->
+					<div class="modal fade" id="modalEditar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-edit text-success"></i> Editar Usuario</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+					        <form name="formularioEditarCiudad" novalidate>
+					          <div class="form-group">
+					            <label for="id" class="col-form-label">Id (Interno):</label>
+					            <input type="text" class="form-control" id="idInput" ng-model="idInput" disabled>
+					          </div>
+					          <div class="form-group">
+					            <label for="message-text" class="col-form-label">Nombre:</label>
+					            <input type="text" class="form-control" id="nombreInput" ng-model="nombreInput" name="nombreInput" required>
+									  <span class="text-danger" ng-show="formularioEditarCiudad.nombreInput.$error.required">Nombre es obligatorio.</span>
+					          </div>
+					          <div class="form-group">
+					            <label for="message-text" class="col-form-label">Email:</label>
+					            <input type="email" class="form-control" id="emailInput" ng-model="emailInput" name="emailInput" required>
+									  <span class="text-danger" ng-show="formularioEditarCiudad.emailInput.$error.required">Email es obligatorio.</span>
+					  				<span class="text-danger" ng-show="formularioEditarCiudad.emailInput.$error.email">Email no valido.</span>
+					          </div>
+					          <div class="form-group">
+					            <label for="message-text" class="col-form-label">Password:</label>
+					            <input type="password" class="form-control" id="pwdInput" ng-model="pwdInput" name="pwdInput" required>
+									  <span class="text-danger" ng-show="formularioEditarCiudad.pwdInput.$error.required">Password es obligatorio.</span>
+					          </div>
+					        </form>
+					      </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="updateUser()"
+					        	ng-disabled="(formularioEditarCiudad.emailInput.$error.required) || (formularioEditarCiudad.emailInput.$error.email) || (formularioEditarCiudad.pwdInput.$error.required)"><i class="fa fa-edit"></i> Modificar</button>
+					        <button type="button" class="btn btn-secondary"  data-dismiss="modal"><i class="fa fa-rotate-left"></i> Volver</button>
+					      </div>
+					    </div>
+					  </div>
+					</div>
+		<!-- \\\\\\MODAL BORRAR\\\\\\ -->
+					<div class="modal fade" id="modalBorrar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-trash text-danger"></i> Borrar Usuario</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+					      	<h2>¿Esta a punto de <strong><mark>BORRAR</mark></strong> el siguiente usuario, esta usted seguro?</h2>
+					        <form>
+					          <div class="form-group">
+					            <label for="id" class="col-form-label">Id (Interno):</label>
+					            <input type="text" class="form-control" id="idInput" ng-model="idInput" disabled>
+					          </div>
+					          <div class="form-group">
+					            <label for="message-text" class="col-form-label">Nombre:</label>
+					            <input type="text" class="form-control" id="nombreInput" ng-model="nombreInput" disabled>
+					          </div>
+					          <div class="form-group">
+					            <label for="message-text" class="col-form-label">Email:</label>
+					            <input type="text" class="form-control" id="emailInput" ng-model="emailInput" disabled>
+					          </div>
+					        </form>
+					      </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="deleteUser()"><i class="fa fa-trash"></i> Borrar</button>
+					        <button type="button" class="btn btn-secondary"  data-dismiss="modal"><i class="fa fa-rotate-left"></i> Volver</button>
+					      </div>
+					    </div>
+					  </div>
+					</div>
+		<!-- \\\\\\MODAL CUSTOM MSG\\\\\\ -->
+					<div class="modal fade" id="modalMSG" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="exampleModalLabel"><i id="modalIcono"></i> {{titleMsgModal}} </h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+					      	<h5> {{bodyMsgModal}} </h5>
+					      </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-rotate-cross"></i> Cerrar</button>
+					      </div>
+					    </div>
+					  </div>
+					</div>
+<!-- ||| FIN MODAL ||| -->
+
+<!--FOOTER-->
+<div ng-include="'views_common/footer.html'"></div>
+
+<!-- JS JQUERY y BOOTSTRAP -->
+<script src="lib/js/jquery-3.2.1.slim.min.js"></script>
+<script src="lib/js/popper.min.js"></script>
+<script src="lib/js/bootstrap.min.js"></script>
+
+<!-- Controlador ANGULAR -->
+<script src="lib/js/controller/user_controller.js"></script>
+
+<script src="lib/js/mijs.js"></script>
+</body>
+</html>

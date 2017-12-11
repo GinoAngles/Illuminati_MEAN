@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+<head>
+	<meta name="Illuminatis"  content="text/html;" http-equiv="content-type" charset="utf-8">
+	<title>Bienvenido Illuminati</title>
+	<!-- CSS BOOTSTRAP -->
+	<link rel="stylesheet" href="lib/css/bootstrap.min.css">
+	<!-- CSS FONT AWESOME -->
+	<link rel="stylesheet" href="lib/font-awesome-4.7.0/css/font-awesome.css">
+	<!-- Fuente Spectral+SC Google -->
+	<link href='https://fonts.googleapis.com/css?family=Spectral+SC' rel='stylesheet'>
+	<!-- Custom CSS -->
+	<link rel="stylesheet" href="lib/css/miestilo.css">
+	<!-- ANGULAR JS -->
+	<script src="lib/js/angular-1.6.4.min.js"></script>
+</head>
+<body ng-app="illuminati" ng-controller="Ctrl_user">
+
+<!--HEADER-->
+<div ng-include="'views_common/header.html'"></div>
+
+<!-- BODY -->
+<div class="container-fluid margin-top-1">
+	<div class="row justify-content-center">
+		<div class="col-lg-10">
+			<form name="formularioLogin">
+			<h1 class="display-4 text-center">Formulario de Login</h1>
+
+			  <div class="form-group">
+			    <label for="emailLogin">Email:</label>
+			    <input type="email" ng-model="emailLogin" class="form-control" id="emailLogin" name="emailLogin" required>
+					  <span class="text-danger" ng-show="formularioLogin.emailLogin.$error.required">Email es obligatorio.</span>
+					  <span class="text-danger" ng-show="formularioLogin.emailLogin.$error.email">Email no valido.</span>
+			  </div>
+			  <div class="form-group">
+			    <label for="pwdLogin">Password:</label>
+			    <input type="password" ng-model="pwdLogin" class="form-control" id="pwdLogin" name="pwdLogin" required>
+					  <span class="text-danger" ng-show="formularioLogin.pwdLogin.$error.required">Email es obligatorio.</span>
+			  </div>
+			  <button type="button" class="btn btn-primary" ng-click="login()" ng-disabled="(formularioLogin.emailLogin.$error.required) || (formularioLogin.emailLogin.$error.email) || (formularioLogin.pwdLogin.$error.required)">
+			  	<i class="fa fa-sign-in"></i> Enviar</button>
+			  <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modalRegistro"><i class="fa fa-plus"></i> Registrarse</button>
+
+			</form>
+		</div>
+	</div>
+</div>
+
+<!--FOOTER-->
+<div ng-include="'views_common/footer.html'"></div>
+
+<!-- MODAL -->
+		<!-- \\\\\\MODAL REGISTRARSE\\\\\\ -->
+	<div class="modal fade" id="modalRegistro" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-user text-info"></i> Nuevo Usuario</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	        <form name="formularioNuevoUsuario" novalidate>
+	          <div class="form-group">
+	            <label for="message-text" class="col-form-label">Nombre:</label>
+	            <input type="text" class="form-control" ng-model="nombreInput" name="nombreInput" required>
+					  <span class="text-danger" ng-show="formularioNuevoUsuario.nombreInput.$error.required">Nombre es obligatorio.</span>
+	          </div>
+	          <div class="form-group">
+	            <label for="message-text" class="col-form-label">Email:</label>
+	            <input type="email" class="form-control" ng-model="emailInput" name="emailInput" required>
+					  <span class="text-danger" ng-show="formularioNuevoUsuario.emailInput.$error.required">Email es obligatorio.</span>
+					  <span class="text-danger" ng-show="formularioNuevoUsuario.emailInput.$error.email">Email no valido.</span>
+	          </div>
+	          <div class="form-group">
+	            <label for="message-text" class="col-form-label">Contraseña:</label>
+	            <input type="password" class="form-control" ng-model="pwdInput" name="pwdInput" required>
+					  <span class="text-danger" ng-show="formularioNuevoUsuario.pwdInput.$error.required">Contraseña es obligatorio.</span>
+	          </div>
+	        </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="createUser()"
+	        	ng-disabled="(formularioNuevoUsuario.nombreInput.$error.required) || (formularioNuevoUsuario.emailInput.$error.required) || (formularioNuevoUsuario.emailInput.$error.email) || (formularioNuevoUsuario.pwdInput.$error.required)"><i class="fa fa-plus"></i> Crear</button>
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-rotate-left"></i> Volver</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+		<!-- \\\\\\MODAL CUSTOM MSG\\\\\\ -->
+	<div class="modal fade" id="modalMSG" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel"><i id="modalIcono"></i> {{titleMsgModal}} </h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	      	<h5> {{bodyMsgModal}} </h5>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-rotate-cross"></i> Cerrar</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+
+<!-- JS JQUERY y BOOTSTRAP -->
+<script src="lib/js/jquery-3.2.1.slim.min.js"></script>
+<script src="lib/js/popper.min.js"></script>
+<script src="lib/js/bootstrap.min.js"></script>
+
+<!-- Controlador ANGULAR -->
+<script src="lib/js/controller/user_controller.js"></script>
+
+<script src="lib/js/mijs.js"></script>
+</body>
+</html>

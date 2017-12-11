@@ -1,0 +1,12 @@
+{
+  "name": "Illuminatis",
+  "version": "1.0.0",
+  "description": "SPA with MEAN lv2",
+  "main": "server.js",
+  "author": "Gino Angles",
+  "dependencies": {
+    "express": "^4.16.2",
+    "method-override": "^2.3.10",
+    "mongoose": "^4.13.5"
+  }
+}
