@@ -1,7 +1,7 @@
 {
   "name": "Illuminatis",
   "version": "1.0.0",
-  "description": "SPA with MEAN lv2",
+  "description": "SPA with MEAN lv3",
   "main": "server.js",
   "author": "Gino Angles",
   "dependencies": {
