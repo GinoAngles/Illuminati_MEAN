@@ -71,6 +71,25 @@ module.exports = function(app){
 				}
 			});
 	});
+	app.put('/foro/addLike', function (req, res){
+		Entrada.update({ _id: req.body.id },
+			{ $addToSet: { likes: req.body.email}}, {upsert: false},
+			function (err, updatedEntrada){
+				if(err){
+					//console.log('Error al modificar el Entrada: '+err+updatedEntrada);	
+					res.json({ cod: 'COD012:ErrorAlDarLike-'+req.body.email+'-'+req.body.id });
+				}else{
+					//Enviamos todos los Entradas junto con el modificado.
+					Entrada.find({}, function (err, Entradas) {
+						if(err) {
+							res.send(err);
+						}else{
+							res.json({ cod: 'COD011:AddLikeOk', datos: Entradas });
+						}
+					});
+				}
+			});
+	});
 
 	// DELETE de un Entrada específico y devuelve todos tras borrarlo.
 	app.delete('/foro/deleteEntrada/:id', function (req, res) {
