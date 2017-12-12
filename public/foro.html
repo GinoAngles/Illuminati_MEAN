@@ -7,8 +7,8 @@
 	<link rel="stylesheet" href="lib/css/bootstrap.min.css">
 	<!-- CSS FONT AWESOME -->
 	<link rel="stylesheet" href="lib/font-awesome-4.7.0/css/font-awesome.css">
-	<!-- Fuente Spectral+SC Google -->
-	<link href='https://fonts.googleapis.com/css?family=Spectral+SC' rel='stylesheet'>
+	<!-- Google Fonts -->
+	<link href="https://fonts.googleapis.com/css?family=Lora:400" rel="stylesheet">
 	<!-- Custom CSS -->
 	<link rel="stylesheet" href="lib/css/miestilo.css">
 	<!-- ANGULAR JS -->
@@ -33,12 +33,12 @@
 			<table class="table table-hover table-bordered table-sm">
 			  <thead class="thead-dark">
 			    <tr style="font-size:1rem;">
-			    	<th> Info</th>
-				    <th> Mensaje</th>
+			    	<th ng-click="orderByMe('-fecha')"><i class="fa fa-sort text-info"></i>  Info</th>
+				    <th ng-click="orderByMe('-likes.length')"><i class="fa fa-sort text-info"></i> Mensaje</th>
 			    </tr>
 			  </thead>
 			  <tbody>
-				  <tr ng-repeat="x in entradas | filter:miFiltro">
+				  <tr ng-repeat="x in entradas | orderBy:myOrderBy | filter:miFiltro">
 				  	<td>
 				  		<p> <img ng-src="{{x.avatar}}" id="avatarForo" class="rounded" alt="avatar"> </p>
 				  		<p class="text-detail-forum"><strong>Usuario:</strong> {{x.usuario}}</p> 
@@ -50,8 +50,12 @@
 				    <td style="width:80%;">
 				    	{{x.msg}}
 						<div class="text-right" id="footerFormu">
-							<button type="button" class="btn btn-sm btn-outline-success" data-toggle="modal" data-target="#modalEditar" ng-click="loadMSG(x._id, x.msg)" ng-disabled="!isOwner(x.usuario)"><i class="fa fa-edit"></i></button> 
+							<button type="button" class="btn btn-sm btn-outline-info" data-toggle="modal" data-target="#modalEditar" ng-click="loadMSG(x._id, x.msg)" ng-disabled="!isOwner(x.usuario)"><i class="fa fa-edit"></i></button> 
 			    			<button type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#modalBorrar" ng-click="loadMSG(x._id, x.msg)" ng-disabled="!isOwner(x.usuario)"><i class="fa fa-trash"></i></button>
+						</div>
+						<div class="text-center">
+			    			<button type="button" class="btn btn-sm btn-outline-success" ng-click="addLike(x._id)" ng-disabled="!compruebaSiLogIn()"><i class="fa fa-thumbs-up"></i></button>
+							<button style="cursor:default;" class="btn btn-sm">{{x.likes.length}}</button>
 						</div>
 				    </td>
 				  </tr>
