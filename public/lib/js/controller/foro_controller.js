@@ -2,6 +2,9 @@ var app = angular.module('illuminati', []);
 
 app.controller('Ctrl_foro', function($scope, $http) {
 	$scope.id_msg = '';
+	$scope.orderByMe = function(x) {
+	    $scope.myOrderBy = x;
+	};
 	$scope.loadMSG = function(id, msg){
 		$scope.msgInput = msg;
 		$scope.id_msg = id;
@@ -103,5 +106,34 @@ app.controller('Ctrl_foro', function($scope, $http) {
 		}else{
 			return false;
 		}
+	};
+	$scope.addLike = function(id){
+		$http({
+		  method: 'PUT',
+		  url: '/foro/addLike',
+		  data: {
+		  	id: id,
+		  	email: sessionStorage.getItem('usuario.email')
+		  },
+	      headers: {
+	          "Content-Type": "application/json"
+	      }
+		}).then(function successCallback(response) {
+			if(response.data.cod == 'COD011:AddLikeOk'){
+				$('#modalIcono').addClass("fa fa-thumbs-o-up text-success");
+				$scope.titleMsgModal = 'Todo Bien';
+				$scope.bodyMsgModal = 'Acabamos de dar Like al Post, recuerda que solo puedes dar 1 por Post.';
+				$('#modalMSG').modal('show');
+				$scope.entradas = response.data.datos;
+			}else{
+				$('#modalIcono').addClass("fa fa-minus-circle text-danger");
+				$scope.titleMsgModal = 'Algo ha fallado :S';
+				$scope.bodyMsgModal = 'Ha ocurrido un error mientras actualizabamos el like.';
+				$('#modalMSG').modal('show');
+			}
+			//console.log('Exito al modificado el usuario: ' + response + response.data);
+		  }, function errorCallback(response) {
+			console.log('Error durante la modificación de una entrada(Dando LIKE): ' + response + response.data.cod);
+		  });
 	};
 });

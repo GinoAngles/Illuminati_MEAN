@@ -27,14 +27,14 @@ app.controller('Ctrl_user', function($scope, $http) {
 				$('#modalIcono').addClass("fa fa-minus-circle text-danger");
 				$scope.titleMsgModal = 'Error durante la creación del Usuario.';
 				$scope.bodyMsgModal = 'Lo sentimos, pero ese correo ya esta registrado.';
-				$('#modalMSG').modal('show');
 			}else{
 				$('#modalIcono').addClass("fa fa-thumbs-o-up text-success");
 				$scope.titleMsgModal = 'Usuario creado correctamente.';
 				$scope.bodyMsgModal = 'Acabamos de dar de alta su usuario en el sistema :)';
-				$('#modalMSG').modal('show');
 				//console.log('Exito al crear el usuario: ' + response + response.data);
-			};
+			}
+			$('#modalMSG').modal('show');
+
 		  }, function errorCallback(response) {
 			console.log('Error durante la creación de un usuario: ' + response + response.data);
 		  });
