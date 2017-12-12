@@ -6,7 +6,8 @@ var entrada = new mongoose.Schema({
   asunto: {type: String, required: true},
   msg: {type: String, required: true},
   fecha: {type: Date, required: true},
-  avatar: {type: String}
+  avatar: {type: String},
+  likes: [String]
 });
 
 module.exports = mongoose.model('entrada', entrada);
