@@ -4,12 +4,19 @@ var Entrada = require('./entrada');
 module.exports = function(app){
 	// CREATE POST una entrada en el foro.
 	app.post('/foro/createEntrada', function (req, res) {
+		if(req.body.video_url==''){
+			var video_incrustado = '';
+		}else{
+			var video_incrustado = "https://www.youtube.com/embed/"+req.body.video_url;
+		}
 		Entrada.create({
 			usuario: req.body.usuario,
 			asunto: req.body.asunto,
 			msg: req.body.msg,
 			fecha: req.body.fecha,
-			avatar: req.body.avatar
+			avatar: req.body.avatar,
+			video_url: video_incrustado,
+			quote: req.body.quote
 		}, function (err, entry){
 			if(err) {
 				//console.log('error en el API_foro.js createEntrada');

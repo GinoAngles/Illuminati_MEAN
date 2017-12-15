@@ -24,22 +24,22 @@
 	<div class="row justify-content-center">
 		<div class="col-lg-10">
 			<form name="formularioLogin">
-			<h1 class="display-4 text-center">Formulario de Login</h1>
+			<h1 class="display-4 text-center">Login</h1>
 
 			  <div class="form-group">
-			    <label for="emailLogin">Email:</label>
+			    <label for="emailLogin"><i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i> Email:</label>
 			    <input type="email" ng-model="emailLogin" class="form-control" id="emailLogin" name="emailLogin" required>
 					  <span class="text-danger" ng-show="formularioLogin.emailLogin.$error.required">Email es obligatorio.</span>
 					  <span class="text-danger" ng-show="formularioLogin.emailLogin.$error.email">Email no valido.</span>
 			  </div>
 			  <div class="form-group">
-			    <label for="pwdLogin">Password:</label>
+			    <label for="pwdLogin"><i class="fa fa-key fa-fw" aria-hidden="true"></i> Password:</label>
 			    <input type="password" ng-model="pwdLogin" class="form-control" id="pwdLogin" name="pwdLogin" required>
-					  <span class="text-danger" ng-show="formularioLogin.pwdLogin.$error.required">Email es obligatorio.</span>
+					  <span class="text-danger" ng-show="formularioLogin.pwdLogin.$error.required">Password es obligatorio.</span>
 			  </div>
 			  <button type="button" class="btn btn-primary" ng-click="login()" ng-disabled="(formularioLogin.emailLogin.$error.required) || (formularioLogin.emailLogin.$error.email) || (formularioLogin.pwdLogin.$error.required)">
-			  	<i class="fa fa-sign-in"></i> Enviar</button>
-			  <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modalRegistro"><i class="fa fa-plus"></i> Registrarse</button>
+			  	<i class="fa fa-sign-in" aria-hidden="true"></i> Enviar</button>
+			  <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modalRegistro"><i class="fa fa-plus" aria-hidden="true"></i> Registrarse</button>
 
 			</form>
 		</div>
@@ -55,7 +55,7 @@
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-user text-info"></i> Nuevo Usuario</h5>
+	        <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-user text-info" aria-hidden="true"></i> Nuevo Usuario</h5>
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	          <span aria-hidden="true">&times;</span>
 	        </button>
@@ -63,27 +63,27 @@
 	      <div class="modal-body">
 	        <form name="formularioNuevoUsuario" novalidate>
 	          <div class="form-group">
-	            <label for="message-text" class="col-form-label">Nombre:</label>
+	            <label for="message-text" class="col-form-label"><i class="fa fa-user fa-fw" aria-hidden="true"></i> Nombre:</label>
 	            <input type="text" class="form-control" ng-model="nombreInput" name="nombreInput" required>
 					  <span class="text-danger" ng-show="formularioNuevoUsuario.nombreInput.$error.required">Nombre es obligatorio.</span>
 	          </div>
 	          <div class="form-group">
-	            <label for="message-text" class="col-form-label">Email:</label>
+	            <label for="message-text" class="col-form-label"><i class="fa fa-envelope-o fa-fw" aria-hidden="true"></i> Email:</label>
 	            <input type="email" class="form-control" ng-model="emailInput" name="emailInput" required>
 					  <span class="text-danger" ng-show="formularioNuevoUsuario.emailInput.$error.required">Email es obligatorio.</span>
 					  <span class="text-danger" ng-show="formularioNuevoUsuario.emailInput.$error.email">Email no valido.</span>
 	          </div>
 	          <div class="form-group">
-	            <label for="message-text" class="col-form-label">Contraseña:</label>
+	            <label for="message-text" class="col-form-label"><i class="fa fa-key fa-fw" aria-hidden="true"></i> Password:</label>
 	            <input type="password" class="form-control" ng-model="pwdInput" name="pwdInput" required>
-					  <span class="text-danger" ng-show="formularioNuevoUsuario.pwdInput.$error.required">Contraseña es obligatorio.</span>
+					  <span class="text-danger" ng-show="formularioNuevoUsuario.pwdInput.$error.required">Password es obligatorio.</span>
 	          </div>
 	        </form>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-primary" data-dismiss="modal" ng-click="createUser()"
-	        	ng-disabled="(formularioNuevoUsuario.nombreInput.$error.required) || (formularioNuevoUsuario.emailInput.$error.required) || (formularioNuevoUsuario.emailInput.$error.email) || (formularioNuevoUsuario.pwdInput.$error.required)"><i class="fa fa-plus"></i> Crear</button>
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-rotate-left"></i> Volver</button>
+	        	ng-disabled="(formularioNuevoUsuario.nombreInput.$error.required) || (formularioNuevoUsuario.emailInput.$error.required) || (formularioNuevoUsuario.emailInput.$error.email) || (formularioNuevoUsuario.pwdInput.$error.required)"><i class="fa fa-plus" aria-hidden="true"></i> Crear</button>
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-rotate-left" aria-hidden="true"></i> Volver</button>
 	      </div>
 	    </div>
 	  </div>
@@ -93,7 +93,7 @@
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title" id="exampleModalLabel"><i id="modalIcono"></i> {{titleMsgModal}} </h5>
+	        <h5 class="modal-title" id="exampleModalLabel"><i id="modalIcono" aria-hidden="true"></i> {{titleMsgModal}} </h5>
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	          <span aria-hidden="true">&times;</span>
 	        </button>
@@ -102,7 +102,7 @@
 	      	<h5> {{bodyMsgModal}} </h5>
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-rotate-cross"></i> Cerrar</button>
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-rotate-cross" aria-hidden="true"></i> Cerrar</button>
 	      </div>
 	    </div>
 	  </div>

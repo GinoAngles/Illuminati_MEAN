@@ -140,10 +140,6 @@ app.controller('Ctrl_user', function($scope, $http) {
 		  });
 	};
 	$scope.compruebaAdmin = function (){
-		if(sessionStorage.getItem('usuario.tipo') != null && sessionStorage.getItem('usuario.tipo') == 'root'){
-			return true;
-		}else{
-			return false;
-		};
+		return (sessionStorage.getItem('usuario.tipo') != null && sessionStorage.getItem('usuario.tipo') == 'root') ? true : false;
 	};
 });

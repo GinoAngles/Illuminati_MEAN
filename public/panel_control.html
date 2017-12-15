@@ -50,13 +50,13 @@
 			    			<td><img style="width:90%;" src="lib/img/7.png"><br><input type="radio" ng-model="avatar.url" value="7"></td>
 			    		</tr>
 			    		<tr>
-			    			<td colspan=8><button type="button" class="btn btn-outline-success" ng-click="updateUserAvatar()"><i class="fa fa-save"></i> Guardar Avatar</button></td>
+			    			<td colspan=8><button type="button" class="btn btn-outline-success" ng-click="updateUserAvatar()"><i class="fa fa-save" aria-hidden="true"></i> Guardar Avatar</button></td>
 			    		</tr>
 			    	</table></form>
 
 		    	</div>
 
-		    	<p style="margin-top:3.9rem;" class="text-center"><button type="button" class="btn btn-outline-danger" ng-click="logout()"><i class="fa fa-sign-out"></i> Desconectarse</button></p>
+		    	<p style="margin-top:3.9rem;" class="text-center"><button type="button" class="btn btn-outline-danger" ng-click="logout()"><i class="fa fa-sign-out" aria-hidden="true"></i> Desconectarse</button></p>
     		</div>
 
     		<div class="border border-secondary" style="background-color:#e0e0e0;" ng-if="!compruebaSiLogIn()">
@@ -74,7 +74,7 @@
 					  <div class="modal-dialog" role="document">
 					    <div class="modal-content">
 					      <div class="modal-header">
-					        <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-info-circle text-info"></i> {{titleMsgModal}} </h5>
+					        <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-info-circle text-info" aria-hidden="true"></i> {{titleMsgModal}} </h5>
 					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					          <span aria-hidden="true">&times;</span>
 					        </button>
@@ -83,7 +83,7 @@
 					      	<h5> {{bodyMsgModal}} </h5>
 					      </div>
 					      <div class="modal-footer">
-					        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-rotate-cross"></i> Cerrar</button>
+					        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-rotate-cross" aria-hidden="true"></i> Cerrar</button>
 					      </div>
 					    </div>
 					  </div>

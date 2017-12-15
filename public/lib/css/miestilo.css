@@ -32,7 +32,7 @@ footer, header, hgroup, menu, nav, section {
 body{
   height: 100%;
   color: #777;
-  font-family: 'Spectral SC', serif;
+  font-family: 'Lora', serif;
   font-size: 1.1rem;
 }
 footer{
@@ -82,15 +82,30 @@ button{
   background-color: rgba(0, 150, 136, 0.95) !important;
   padding-top: 2px;
   padding-bottom: 2px;
+
+  font-size: 0.9rem;
 }
 
 .navbar a{
-  color:#000 !important;
+  color:#fff !important;
 }
 
 /*****************************/
 /*   ESTILO DEL FORO         */
 /*****************************/
+
+#quoteForoContainer{
+  color:#fff;
+  background-color: rgba(96, 125, 139, 0.7);
+
+  box-shadow: -4px -4px 17px rgba(0,0,0,.37);
+  -webkit-box-shadow: -4px -4px 17px rgba(0,0,0,.37);
+  -moz-box-shadow: -4px -4px 17px rgba(0,0,0,.37);
+  border-radius: 9px;
+
+  margin: .4rem;
+  padding: .4rem;
+}
 
 #contenedorForoInput{
   margin-top: 1.2rem;
@@ -101,11 +116,6 @@ button{
   border-radius: 8px;
 }
 
-#footerFormu{
-  padding-top: 10rem;
-  padding-right: 1rem;
-}
-
 #avatarForo{
   height: 45%;
   width: 45%;
@@ -114,6 +124,20 @@ button{
 .text-detail-forum{
   /* padding: 2px 0px 2px 0px; */
   margin: -5px 0px 0px 0px;
+  font-size: 0.9rem;
+}
+
+.tablaForo{
+  border: .1rem solid rgba(0,0,0,.1);
+}
+.tablaForo td{
+  border: 0;
+}
+
+.pieForo{
+  padding: .75rem 1.25rem;
+  background-color: rgba(0,0,0,.03);
+  border-top: 1px solid rgba(0,0,0,.125);
 }
 
 /*****************************/

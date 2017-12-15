@@ -22,43 +22,67 @@
 <!-- BODY -->
 <div class="container-fluid margin-top-1">
 	<div class="row justify-content-center">
-		<div class="col-lg-10">
+		<div class="col-lg-12">
 
-			<h1 class="display-4 text-center">Foro Ejemplo</h1>
+			<h1 class="display-4 text-center">Foro Illuminati</h1>
 
-    		<div class="border border-secondary" style="background-color:#e0e0e0;">
-		    	<p class="h4 text-center" style="padding-top:1rem;"><i class="fa fa-search text-info"></i> Filtrar <input type="text" ng-model="miFiltro"></p>
-    		</div>
-
-			<table class="table table-hover table-bordered table-sm">
+			<table class="table table-md tablaForo">
 			  <thead class="thead-dark">
+			  	<tr>
+		    		<th colspan="6" style="background-color:#3b465e;">
+		    			<p class="h5 text-center" style="margin-bottom:-.3rem;"><i class="fa fa-search text-info" aria-hidden="true"></i> Filtrar <input type="text" ng-model="miFiltro"></p>
+		    		</th>
+			  	</tr>
 			    <tr style="font-size:1rem;">
-			    	<th ng-click="orderByMe('-fecha')"><i class="fa fa-sort text-info"></i>  Info</th>
-				    <th ng-click="orderByMe('-likes.length')"><i class="fa fa-sort text-info"></i> Mensaje</th>
+			    	<th ng-click="orderByMe('-fecha')"><i class="fa fa-sort text-info" aria-hidden="true"></i>  Info</th>
+				    <th ng-click="orderByMe('-likes.length')"><i class="fa fa-sort text-info" aria-hidden="true"></i> Mensaje</th>
 			    </tr>
 			  </thead>
-			  <tbody>
-				  <tr ng-repeat="x in entradas | orderBy:myOrderBy | filter:miFiltro">
-				  	<td>
-				  		<p> <img ng-src="{{x.avatar}}" id="avatarForo" class="rounded" alt="avatar"> </p>
-				  		<p class="text-detail-forum"><strong>Usuario:</strong> {{x.usuario}}</p> 
-				  		<p class="text-detail-forum"><strong>Asunto:</strong> {{x.asunto}} </p>
-				  		<p class="text-detail-forum"><strong>Fecha Entera:</strong> {{x.fecha}} </p>
-				  		<p class="text-detail-forum"><strong>Fecha:</strong> {{x.fecha.substring(0, 10)}} </p>
-				  		<p class="text-detail-forum"><strong>Hora:</strong> {{x.fecha.substring(11, 19)}}</p>
-				  	</td>
-				    <td style="width:80%;">
-				    	{{x.msg}}
-						<div class="text-right" id="footerFormu">
-							<button type="button" class="btn btn-sm btn-outline-info" data-toggle="modal" data-target="#modalEditar" ng-click="loadMSG(x._id, x.msg)" ng-disabled="!isOwner(x.usuario)"><i class="fa fa-edit"></i></button> 
-			    			<button type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#modalBorrar" ng-click="loadMSG(x._id, x.msg)" ng-disabled="!isOwner(x.usuario)"><i class="fa fa-trash"></i></button>
-						</div>
-						<div class="text-center">
-			    			<button type="button" class="btn btn-sm btn-outline-success" ng-click="addLike(x._id)" ng-disabled="!compruebaSiLogIn()"><i class="fa fa-thumbs-up"></i></button>
-							<button style="cursor:default;" class="btn btn-sm">{{x.likes.length}}</button>
-						</div>
-				    </td>
-				  </tr>
+			  <tbody ng-repeat="x in entradas | orderBy:myOrderBy | filter:miFiltro">
+			  		<tr>
+					  	<td>
+					  		<p> <img ng-src="{{x.avatar}}" id="avatarForo" class="rounded" alt="avatar"> </p>
+					  		<p class="text-detail-forum">Usuario: <strong>{{x.usuario.toUpperCase()}}</strong></p> 
+					  		<p class="text-detail-forum">Asunto: <strong>{{x.asunto}}</strong> </p>
+					  		<!--<p class="text-detail-forum"><strong>Fecha Entera:</strong> {{x.fecha}} </p>-->
+					  		<p class="text-detail-forum">Fecha: {{x.fecha.substring(0, 10)}} </p>
+					  		<p class="text-detail-forum">Hora: <strong>{{x.fecha.substring(11, 19)}}</strong></p>
+					  	</td>
+					    <td style="width:80%;">
+					    	<div id="quoteForoContainer" ng-if="siQuote(x.quote)">
+					    		<i class="fa fa-quote-left text-dark" aria-hidden="true"></i> {{x.quote}} <i class="fa fa-quote-right text-dark" aria-hidden="true"></i>
+					    	</div>
+					    	{{x.msg}}
+					    	<div style="margin-top:1rem;" ng-if="siVideoYT(x.video_url)">
+					    		<button class="btn btn-sm btn-outline-secondary" type="button" data-toggle="collapse" data-target="#collapseVideo{{x._id}}" aria-expanded="false" aria-controls="collapseVideo{{x._id}}">
+							   		<i class="fa fa-file-video-o" aria-hidden="true"></i> Toogle-Video
+							  	</button>
+					    		<div style="margin-top:1rem;" class="collapse" id="collapseVideo{{x._id}}">
+								  <div class="card card-body">
+						    		<iframe width="420" height="315" ng-src="{{x.video_url}}" frameborder="0" allowfullscreen></iframe>
+								  </div>
+								</div>
+					    	</div>
+					    </td>
+					  </tr>
+					  <tr>
+					  	<td></td>
+					  	<td>				  		
+					    	<div class="container-fluid">
+					    		<div class="row">
+									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right">
+						    			<button type="button" class="btn btn-sm btn-outline-success" ng-click="addLike(x._id)" ng-disabled="!compruebaSiLogIn()"><i class="fa fa-thumbs-up" aria-hidden="true"></i> Like</button>
+										<button style="cursor:default;" class="btn btn-sm">{{x.likes.length}}</button>
+									</div>
+									<div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 text-right">
+										<button type="button" class="btn btn-sm btn-outline-dark" data-toggle="modal" data-target="#modalQuote" ng-click="loadMSG2(x.msg)" ng-disabled="!compruebaSiLogIn(x.usuario)"><i class="fa fa-quote-left" aria-hidden="true"></i> <i class="fa fa-quote-right" aria-hidden="true"></i> Quote</button> 
+										<button type="button" class="btn btn-sm btn-outline-info" data-toggle="modal" data-target="#modalEditar" ng-click="loadMSG(x._id, x.msg)" ng-if="isOwner(x.usuario)"><i class="fa fa-edit" aria-hidden="true"></i> Edit</button> 
+						    			<button type="button" class="btn btn-sm btn-outline-danger" data-toggle="modal" data-target="#modalBorrar" ng-click="loadMSG(x._id, x.msg)" ng-if="isOwner(x.usuario)"><i class="fa fa-trash" aria-hidden="true"></i> Delete</button>
+									</div>
+					    		</div>
+					    	</div>
+					  	</td>
+					  </tr>
 			  </tbody>
 			</table>
 
@@ -73,19 +97,25 @@
 			<form name="formularioForoEntrada">
 
 			  <div class="form-group">
-			    <label for="asuntoForo">Asunto:</label>
+			    <label for="asuntoForo"><i class="fa fa-question fa-fw" aria-hidden="true"></i> Asunto:</label>
 			    <input type="text" ng-model="asuntoForo" class="form-control" id="asuntoForo" name="asuntoForo" required>
 					  <span class="text-danger" ng-show="formularioForoEntrada.asuntoForo.$error.required">Asunto es obligatorio.</span>
 			  </div>
 			  <div class="form-group">
-			    <label for="mensajeForo">Mensaje:</label>
+			    <label for="mensajeForo"><i class="fa fa-file-text-o fa-fw" aria-hidden="true"></i> Mensaje:</label>
 				<textarea type="text" ng-model="mensajeForo" class="form-control" id="mensajeForo" name="mensajeForo" required></textarea>
 					  <span class="text-danger" ng-show="formularioForoEntrada.mensajeForo.$error.required">Mensaje es obligatorio.</span>
+			  </div>
+			  <div class="form-group">
+			    <label for="video_url"><i class="fa fa-file-video-o fa-fw" aria-hidden="true"></i> Video Youtube (Opcional, solo Key 
+			    	<button type="button" class="btn btn-sm btn-outline-info" data-toggle="modal" data-target="#modalInfo"><i class="fa fa-info-circle" aria-hidden="true"></i></button> ) 			    	
+			    </label>
+				<input type="text" ng-model="video_url" class="form-control" id="video_url" name="video_url">
 			  </div>
 
 			  <div class="form-group text-center" ng-if="compruebaSiLogIn()">
 			    <button type="button" class="btn btn-md btn-outline-success" ng-click="createEntrada()" ng-disabled="(formularioForoEntrada.asuntoForo.$error.required) || (formularioForoEntrada.mensajeForo.$error.required)">
-			  	  <i class="fa fa-send"></i> Postear</button>
+			  	  <i class="fa fa-send" aria-hidden="true"></i> Postear</button>
 			  </div>
 			  <div class="form-group text-center" ng-if="!compruebaSiLogIn()">
 				<h1 class="display-4 text-center">Necesitas Loguearte para postear !</h1>
@@ -103,7 +133,7 @@
 					  <div class="modal-dialog" role="document">
 					    <div class="modal-content">
 					      <div class="modal-header">
-					        <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-edit text-success"></i> Editar Mensaje</h5>
+					        <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-edit text-success" aria-hidden="true"></i> Editar Mensaje</h5>
 					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					          <span aria-hidden="true">&times;</span>
 					        </button>
@@ -111,7 +141,7 @@
 					      <div class="modal-body">
 					        <form name="formularioEditarMensaje" novalidate>
 					          <div class="form-group">
-					            <label for="message-text" class="col-form-label">Mensaje:</label>
+					            <label for="message-text" class="col-form-label"><i class="fa fa-file-text-o fa-fw" aria-hidden="true"></i> Mensaje:</label>
 					            <textarea type="text" class="form-control" id="msgInput" ng-model="msgInput" name="msgInput" required></textarea>
 									  <span class="text-danger" ng-show="formularioEditarMensaje.msgInput.$error.required">Msg es obligatorio.</span>
 					          </div>
@@ -119,8 +149,8 @@
 					      </div>
 					      <div class="modal-footer">
 					        <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="updateEntrada()"
-					        	ng-disabled="(formularioEditarMensaje.msgInput.$error.required)"><i class="fa fa-edit"></i> Modificar</button>
-					        <button type="button" class="btn btn-secondary"  data-dismiss="modal"><i class="fa fa-rotate-left"></i> Volver</button>
+					        	ng-disabled="(formularioEditarMensaje.msgInput.$error.required)"><i class="fa fa-edit" aria-hidden="true"></i> Modificar</button>
+					        <button type="button" class="btn btn-secondary"  data-dismiss="modal"><i class="fa fa-rotate-left" aria-hidden="true"></i> Volver</button>
 					      </div>
 					    </div>
 					  </div>
@@ -130,7 +160,7 @@
 					  <div class="modal-dialog" role="document">
 					    <div class="modal-content">
 					      <div class="modal-header">
-					        <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-trash text-danger"></i> Borrar Mensaje</h5>
+					        <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-trash text-danger" aria-hidden="true"></i> Borrar Mensaje</h5>
 					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					          <span aria-hidden="true">&times;</span>
 					        </button>
@@ -139,14 +169,79 @@
 					      	<h2>¿Esta a punto de <strong><mark>BORRAR</mark></strong> el siguiente mensaje, esta usted seguro?</h2>
 					        <form>
 					          <div class="form-group">
-					            <label for="message-text" class="col-form-label">Mensaje:</label>
+					            <label for="message-text" class="col-form-label"><i class="fa fa-file-text-o fa-fw" aria-hidden="true"></i> Mensaje:</label>
 					            <textarea type="text" class="form-control" id="msgInput" ng-model="msgInput" disabled></textarea>
 					          </div>
 					        </form>
 					      </div>
 					      <div class="modal-footer">
-					        <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="deleteEntrada()"><i class="fa fa-trash"></i> Borrar</button>
-					        <button type="button" class="btn btn-secondary"  data-dismiss="modal"><i class="fa fa-rotate-left"></i> Volver</button>
+					        <button type="button" class="btn btn-danger" data-dismiss="modal" ng-click="deleteEntrada()"><i class="fa fa-trash" aria-hidden="true"></i> Borrar</button>
+					        <button type="button" class="btn btn-secondary"  data-dismiss="modal"><i class="fa fa-rotate-left" aria-hidden="true"></i> Volver</button>
+					      </div>
+					    </div>
+					  </div>
+					</div>
+		<!-- \\\\\\MODAL QUOTE\\\\\\ -->
+					<div class="modal fade" id="modalQuote" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					  <div class="modal-dialog" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-info-circle text-info" aria-hidden="true"></i> Contestar Mensaje</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+
+								<form name="formularioForoQuote">
+								  <div class="form-group">
+								    <label for="quoteForo"><i class="fa fa-quote-left fa-fw" aria-hidden="true"></i> Quote</label>
+								    <textarea type="text" ng-model="quoteForo" class="form-control" id="quoteForo" name="quoteForo" required disabled></textarea>
+										  <span class="text-danger" ng-show="formularioForoQuote.quoteForo.$error.required">Quote es obligatorio.</span>
+								  </div>
+								  <div class="form-group">
+								    <label for="asuntoForo2"><i class="fa fa-question fa-fw" aria-hidden="true"></i> Asunto:</label>
+								    <input type="text" ng-model="asuntoForo2" class="form-control" id="asuntoForo2" name="asuntoForo2" required>
+										  <span class="text-danger" ng-show="formularioForoQuote.asuntoForo2.$error.required">Asunto es obligatorio.</span>
+								  </div>
+								  <div class="form-group">
+								    <label for="mensajeForo2"><i class="fa fa-file-text-o fa-fw" aria-hidden="true"></i> Mensaje:</label>
+									<textarea type="text" ng-model="mensajeForo2" class="form-control" id="mensajeForo2" name="mensajeForo2" required></textarea>
+										  <span class="text-danger" ng-show="formularioForoQuote.mensajeForo2.$error.required">Mensaje es obligatorio.</span>
+								  </div>
+								  <div class="form-group">
+								    <label for="video_url2"><i class="fa fa-file-video-o fa-fw" aria-hidden="true"></i> Video Youtube (Opcional, solo Key 
+								    	<button type="button" class="btn btn-sm btn-outline-info" data-toggle="modal" data-target="#modalInfo"><i class="fa fa-info-circle"></i></button> ) 			    	
+								    </label>
+									<input type="text" ng-model="video_url2" class="form-control" id="video_url2" name="video_url2">
+								  </div>
+								</form>
+
+					      </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-md btn-outline-success" ng-click="createQuoteEntrada()" ng-disabled="(formularioForoQuote.quoteForo.$error.required)||(formularioForoQuote.asuntoForo2.$error.required)||(formularioForoQuote.mensajeForo2.$error.required)">
+								  	  <i class="fa fa-send" aria-hidden="true"></i> Postear</button>
+					        <button type="button" class="btn btn-secondary"  data-dismiss="modal"><i class="fa fa-rotate-left" aria-hidden="true"></i> Volver</button>
+					      </div>
+					    </div>
+					  </div>
+					</div>
+		<!-- \\\\\\MODAL INFO AYUDA\\\\\\ -->
+					<div class="modal fade" id="modalInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					  <div class="modal-dialog modal-lg" role="document">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <h5 class="modal-title" id="exampleModalLabel"><i class="fa fa-info-circle text-info" aria-hidden="true"></i> ¿Qué es la Key de Youtube?</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+					      </div>
+					      <div class="modal-body">
+					      	<h2>Es el ID que Identifica de forma unica a cada video de youtube, en la imagen se puede observar en rojo</h2>
+					      	<img src="lib/img/YoutubeKey.png">
+					      </div>
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-secondary"  data-dismiss="modal"><i class="fa fa-rotate-left" aria-hidden="true"></i> Volver</button>
 					      </div>
 					    </div>
 					  </div>
@@ -156,7 +251,7 @@
 					  <div class="modal-dialog" role="document">
 					    <div class="modal-content">
 					      <div class="modal-header">
-					        <h5 class="modal-title" id="exampleModalLabel"><i id="modalIcono"></i> {{titleMsgModal}} </h5>
+					        <h5 class="modal-title" id="exampleModalLabel"><i id="modalIcono" aria-hidden="true"></i> {{titleMsgModal}} </h5>
 					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					          <span aria-hidden="true">&times;</span>
 					        </button>
@@ -165,7 +260,7 @@
 					      	<h5> {{bodyMsgModal}} </h5>
 					      </div>
 					      <div class="modal-footer">
-					        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-rotate-cross"></i> Cerrar</button>
+					        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-rotate-cross" aria-hidden="true"></i> Cerrar</button>
 					      </div>
 					    </div>
 					  </div>

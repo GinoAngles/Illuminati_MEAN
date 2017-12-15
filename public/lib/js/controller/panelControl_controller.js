@@ -9,11 +9,7 @@ app.controller('Ctrl_panelControl', function($scope, $http) {
 		$scope.usuario_tipo = sessionStorage.getItem('usuario.tipo');
 	};
 	$scope.compruebaSiLogIn = function(){
-		if(sessionStorage.getItem('usuario.email') == null){
-			return false;
-		}else{
-			return true;
-		}
+		return (sessionStorage.getItem('usuario.email') == null) ? false : true;
 	};
 	$scope.logout = function(){
 		sessionStorage.clear();

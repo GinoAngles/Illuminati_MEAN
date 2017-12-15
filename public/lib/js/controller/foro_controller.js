@@ -1,5 +1,15 @@
 var app = angular.module('illuminati', []);
 
+//Le Decimos que las fuentes (iframes) cargadas desde otros dominios (youtube concretamente) es una fuente fiable para insertar video.
+app.config(function($sceDelegateProvider) {
+  $sceDelegateProvider.resourceUrlWhitelist([
+  	// Allow same origin resource loads.       when deployment : http:myapp.myhost.mydomain
+    'self',
+    // Allow loading from our assets domain.  Notice the difference between * and **.
+    'https://www.youtube.com/**'
+  ]);
+});
+
 app.controller('Ctrl_foro', function($scope, $http) {
 	$scope.id_msg = '';
 	$scope.orderByMe = function(x) {
@@ -8,6 +18,9 @@ app.controller('Ctrl_foro', function($scope, $http) {
 	$scope.loadMSG = function(id, msg){
 		$scope.msgInput = msg;
 		$scope.id_msg = id;
+	};
+	$scope.loadMSG2 = function(msg){
+		$scope.quoteForo = msg;
 	};
 	$scope.createEntrada = function(){
 		$http({
@@ -18,7 +31,9 @@ app.controller('Ctrl_foro', function($scope, $http) {
 		  	asunto: $scope.asuntoForo,
 		  	msg: $scope.mensajeForo,
 		  	fecha: new Date(),
-		  	avatar: sessionStorage.getItem('usuario.avatar')
+		  	avatar: sessionStorage.getItem('usuario.avatar'),
+		  	video_url: $scope.video_url,
+		  	quote: ''
 		  },
 	      headers: {
 	          "Content-Type": "application/json"
@@ -33,6 +48,43 @@ app.controller('Ctrl_foro', function($scope, $http) {
 			$scope.entradas = response.data;
 			$scope.asuntoForo = '';
 			$scope.mensajeForo = '';
+			$scope.video_url = '';
+			//console.log('Exito al crear la entrada: ' + response + response.data);
+		  }, function errorCallback(response) {
+		    // called asynchronously if an error occurs
+		    // or server returns response with an error status.
+			console.log('Error durante la creación de una entrada: ' + response + response.data);
+		  });
+	};
+	$scope.createQuoteEntrada = function(){
+		$http({
+		  method: 'POST',
+		  url: '/foro/createEntrada',
+		  data: {
+		  	usuario: sessionStorage.getItem('usuario.email'),
+		  	asunto: $scope.asuntoForo2,
+		  	msg: $scope.mensajeForo2,
+		  	fecha: new Date(),
+		  	avatar: sessionStorage.getItem('usuario.avatar'),
+		  	video_url: $scope.video_url2,
+		  	quote: $scope.quoteForo
+		  },
+	      headers: {
+	          "Content-Type": "application/json"
+	      }
+		}).then(function successCallback(response) {
+		    // this callback will be called asynchronously
+		    // when the response is available
+			$('#modalIcono').addClass("fa fa-thumbs-o-up text-success");
+			$scope.titleMsgModal = 'Entrada creada correctamente.';
+			$scope.bodyMsgModal = 'Se acaba de registrar su entrada en el foro, gracias.';
+			$('#modalMSG').modal('show');
+			$('#modalQuote').modal('hide');
+			$scope.entradas = response.data;
+			$scope.asuntoForo2 = '';
+			$scope.mensajeForo2 = '';
+			$scope.video_url2 = '';
+			$scope.quoteForo = '';
 			//console.log('Exito al crear la entrada: ' + response + response.data);
 		  }, function errorCallback(response) {
 		    // called asynchronously if an error occurs
@@ -94,18 +146,16 @@ app.controller('Ctrl_foro', function($scope, $http) {
 		  });
 	};
 	$scope.compruebaSiLogIn = function(){
-		if(sessionStorage.getItem('usuario.email') == null){
-			return false;
-		}else{
-			return true;
-		}
+		return (sessionStorage.getItem('usuario.email') == null) ? false : true;
 	};
 	$scope.isOwner = function(usuarioVista){
-		if(usuarioVista == sessionStorage.getItem('usuario.email') || sessionStorage.getItem('usuario.tipo') == 'root' ){
-			return true;
-		}else{
-			return false;
-		}
+		return (usuarioVista === sessionStorage.getItem('usuario.email') || sessionStorage.getItem('usuario.tipo') === 'root' ) ? true : false;
+	};
+	$scope.siVideoYT = function(url){
+		return (url == null || url === '') ? false : true;
+	};
+	$scope.siQuote = function(quote){
+		return (quote == null || quote === '') ? false : true;
 	};
 	$scope.addLike = function(id){
 		$http({
